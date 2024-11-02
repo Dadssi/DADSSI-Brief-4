@@ -232,6 +232,7 @@ strong {
   font-weight: bolder;
 }
 
+
 /*
 1. Use the user's configured `mono` font-family by default.
 2. Use the user's configured `mono` font-feature-settings by default.
@@ -1094,9 +1095,120 @@ video {
   color: rgb(31 41 55 / var(--tw-text-opacity));
 }
 
+
+/* ---------------------------------------------------------------------------------- */
+
+.main-container{
+  display: flex;
+  justify-content: space-around;
+  background-color: #374151;
+  border: solid 1px #9CA3AF;
+  border-radius: 5px;
+  padding: 2% 1%;
+  box-shadow: #232d3d 10px 10px 100px 30px inset, #232d3d 0px 18px 36px -18px inset;
+  height: 150vh;
+}
+
+.category-container{
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  color: #fff;
+}
+
+.style-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #303541;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 3px;
+  height: 2.5rem;
+  background-color: rgb(243, 213, 83);
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  margin-bottom: 10%;
+}
+
+#icons-taches{
+  color: #303541;
+  margin-right: 5% ;
+  font-size: 0.8rem;
+}
+
+.style-tache {
+  background-color: #374151;
+  border: 1px solid #9CA3AF;
+  border-radius: 3px;
+  padding: 2% 2%;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.titre-descript-tache{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2%;
+  margin-top: 3%;
+  border: 1px solid;
+}
+
+#description-tache{
+  display: none;
+  border: 1px solid #fff;
+  margin-top: 1%;
+  padding: 0 2%;
+  border-radius: 3px;
+  background-color: #374151;
+  color: #9CA3AF;
+  text-shadow: 1px 1px 5px rgba(255,255,255,0.2);
+}
+
+.modif-supp-section{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 3%;
+}
+
+#modifier-tache{
+  background: rgba(0, 128, 0, 0.74);
+  padding: 1% 3%;
+  border-radius: 5px;
+  box-shadow: rgb(42, 242, 2) 3px 3px 6px 0px inset, rgba(0, 0, 0, 0.5) -3px -3px 6px 1px inset;
+}
+
+#supprimer-tache{
+  background-color: rgba(255, 0, 0, 0.719);
+  padding: 1% 3%;
+  border-radius: 5px;
+  box-shadow: rgb(171, 3, 3) 3px 3px 6px 0px inset, rgba(0, 0, 0, 0.5) -3px -3px 6px 1px inset;
+}
+
+#add-cancel-btn{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#add-cancel-btn button{
+  width: 80%;
+  border: #9CA3AF;
+  background-color: #374151;
+  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  font-weight: bold;
+  color: #fff;
+  margin: 5% auto 0% auto;
+  height: 2.5rem;
+  border-radius: 10px;
+}
+
+
+
+/* ---------------------------------------------------------------------------------- */
+
 /* Ajout tache pop up style Start */
 body{
-  /* position: relative; */
+  position: relative;
 }
 
 #ajout-tache-Container {
