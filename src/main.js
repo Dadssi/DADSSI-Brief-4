@@ -42,6 +42,17 @@ function afficherTache(tache) {
     nouvelleTache.setAttribute("data-id", tache.id); // Ajouter l'ID comme attribut
     nouvelleTache.setAttribute("draggable", "true"); // Rendre la tâche draggable
 
+    // Définir la bordure en fonction de la priorité
+    let bordureCouleur = "";
+    if (tache.prioriteTache === "Haute") {
+        bordureCouleur = "red";
+    } else if (tache.prioriteTache === "Moyenne") {
+        bordureCouleur = "orange";
+    } else if (tache.prioriteTache === "Basse") {
+        bordureCouleur = "green";
+    }
+    nouvelleTache.style.border = `1px solid ${bordureCouleur}`;
+
     nouvelleTache.innerHTML = `
         <h4>Titre de la tâche : <span id="titre-tache">${tache.titreTache}</span></h4>
         <h5>Date d'échéance : <span id="deadline">${tache.dateEcheance}</span></h5>
