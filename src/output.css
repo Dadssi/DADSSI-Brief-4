@@ -1117,6 +1117,15 @@ video {
   color: #fff;
 }
 
+#taches-a-realiser,
+#taches-encours,
+#taches-accomplies{
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+}
+
+
 .style-title {
   display: flex;
   justify-content: center;
