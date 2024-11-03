@@ -35,14 +35,14 @@ formulaire.addEventListener("submit", function(event){
             <button id="supprimer-tache">Suprrimer</button>
         </div>
     `;
-    if (statutTache === "Tâche à réaliser"){
+    // ajouter la condition pour positionner la tache selon son statut
+    if (statutTache === "Tache a realiser"){
         document.getElementById("taches-a-realiser").appendChild(nouvelleTache);
-    } else if (statutTache === "Tâche en cours"){
+    } else if (statutTache === "Tache en cours"){
         document.getElementById("taches-encours").appendChild(nouvelleTache)
-    } else if (statutTache === "Tâche accomplie"){
+    } else if (statutTache === "Tache accomplie"){
         document.getElementById("taches-accomplies").appendChild(nouvelleTache)
-    }
-    // document.getElementById("taches-a-realiser").appendChild(nouvelleTache);
+    };
     formulaire.reset();
 });
 

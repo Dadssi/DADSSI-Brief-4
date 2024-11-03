@@ -1112,6 +1112,7 @@ video {
 .category-container{
   display: flex;
   flex-direction: column;
+  gap: 1%;
   width: 30%;
   color: #fff;
 }
