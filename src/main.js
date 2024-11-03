@@ -1,4 +1,9 @@
 //--------------------------------------------------------------------------------------------------
+// Fonction pour générer in ID Unique à chaque tache ajoutée pour qu'on puisse la réference au moment de supression ou de recherche
+function genererIdUnique(){
+    return "tache-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
+}
+//--------------------------------------------------------------------------------------------------
 // Afficher la pop-up d'ajout de tache
 document.getElementById('btn-00').addEventListener('click', function() {
     const textContainer = document.getElementById('ajout-tache-Container');
@@ -28,17 +33,18 @@ function afficherTaches() {
 function afficherTache(tache) {
     const nouvelleTache = document.createElement("div");
     nouvelleTache.classList.add("style-tache");
+    nouvelleTache.setAttribute("data-id", tache.id); // Ajouter l'ID comme attribut
     nouvelleTache.innerHTML = `
-        <h4>Titre de la tâche : <span>${tache.titreTache}</span></h4>
-        <h5>Date d'échéance : <span>${tache.dateEcheance}</span></h5>
-        <h5>Priorité de la tâche : <span>${tache.prioriteTache}</span></h5>
+        <h4>Titre de la tâche : <span id="titre-tache">${tache.titreTache}</span></h4>
+        <h5>Date d'échéance : <span id="deadline">${tache.dateEcheance}</span></h5>
+        <h5>Priorité de la tâche : <span id="priorite">${tache.prioriteTache}</span></h5>
         <h5 class="titre-descript-tache">Description de la tâche <a href="#description-tache"><i class="fa-solid fa-caret-down"></i></a></h5>
-        <div class="description-tache">
-            <p>${tache.descriptionTache}</p>
+        <div>
+            <p id="description-tache">${tache.descriptionTache}</p>
         </div>
         <div class="modif-supp-section">
-            <button class="modifier-tache">Modifier</button>
-            <button class="supprimer-tache">Supprimer</button>
+            <button id="modifier-tache">Modifier</button>
+            <button id="supprimer-tache">Supprimer</button>
         </div>
     `;
     // Ajouter la tache dans sa section selon son statut
@@ -49,11 +55,22 @@ function afficherTache(tache) {
     } else if (tache.statutTache === "Tache accomplie") {
         document.getElementById("taches-accomplies").appendChild(nouvelleTache);
     }
+    //ajouter l'option de supression de tache
+    nouvelleTache.querySelector("#supprimer-tache").addEventListener("click", function(){
+        supprimerTache(tache.id);
+    });
 }
-// Enregistrement des données saisis à partir du formulaire
+// Fonction pour supprimer une tâche
+function supprimerTache(id) {
+    let taches = JSON.parse(localStorage.getItem("taches")) || []; // Récupérer les tâches depuis le localStorage
+    taches = taches.filter(tache => tache.id !== id); // Filtrer pour conserver toutes les taches sauf celle à supprimer
+    localStorage.setItem("taches", JSON.stringify(taches)); // Mettre a jour le localStorage
+    afficherTaches();
+}
+// Enregistrement des données saisis a partir du formulaire
 const formulaire = document.getElementById("formulaire-tache");
 formulaire.addEventListener("submit", function(event) {
-    event.preventDefault(); // Empêche le rechargement de la page
+    event.preventDefault(); // Empeche le rechargement de la page
     // Récupération des valeurs du formulaire
     const titreTache = document.getElementById("tit-tache").value;
     const dateEcheance = document.getElementById("ech-tache").value;
@@ -61,7 +78,14 @@ formulaire.addEventListener("submit", function(event) {
     const descriptionTache = document.getElementById("desc-tache").value;
     const statutTache = document.getElementById("stat-tache").value;
     // Création de l'objet tache 
-    const nouvelleTache = { titreTache, dateEcheance, prioriteTache, descriptionTache, statutTache };
+    const nouvelleTache = { 
+        id: genererIdUnique(), // pour ajouter l'id généré
+        titreTache,
+        dateEcheance,
+        prioriteTache,
+        descriptionTache,
+        statutTache
+    };
     // Sauvegarde de la nouvelle tâche dans le localStorage
     const taches = JSON.parse(localStorage.getItem("taches")) || [];
     taches.push(nouvelleTache);

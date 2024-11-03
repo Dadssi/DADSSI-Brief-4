@@ -1154,13 +1154,18 @@ video {
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
   font-size: 0.8rem;
 }
-
+#titre-tache,
+#deadline,
+#priorite{
+  color: rgb(243, 213, 83);
+}
 .titre-descript-tache{
   display: flex;
   justify-content: space-between;
   padding: 0 2%;
   margin-top: 3%;
   border: 1px solid;
+  font-weight: 500;
 }
 
 #description-tache{
@@ -1170,7 +1175,7 @@ video {
   padding: 0 2%;
   border-radius: 3px;
   background-color: #374151;
-  color: #9CA3AF;
+  color: rgb(243, 213, 83);
   text-shadow: 1px 1px 5px rgba(255,255,255,0.2);
 }
 
@@ -1179,20 +1184,21 @@ video {
   justify-content: space-around;
   margin-top: 3%;
   font-size: 0.8rem;
+  color: #303541;
 }
 
 #modifier-tache{
-  background: rgba(28, 196, 28, 0.74);
+  background: rgb(243, 213, 83);
   padding: 1% 3%;
   border-radius: 3px;
-  /* box-shadow: rgb(42, 242, 2) 3px 3px 6px 0px inset, rgba(0, 0, 0, 0.5) -3px -3px 6px 1px inset; */
+  box-shadow: rgb(138, 119, 32) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
 }
 
 #supprimer-tache{
-  background-color: rgba(254, 46, 46, 0.719);
+  background-color: rgb(243, 213, 83);
   padding: 1% 3%;
   border-radius: 3px;
-  /* box-shadow: rgb(171, 3, 3) 3px 3px 6px 0px inset, rgba(0, 0, 0, 0.5) -3px -3px 6px 1px inset; */
+  box-shadow: rgb(138, 119, 32) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
 }
 
 #add-cancel-btn{
