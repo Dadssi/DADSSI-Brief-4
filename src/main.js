@@ -1,39 +1,47 @@
 //--------------------------------------------------------------------------------------------------
-// Fonction pour générer in ID Unique à chaque tache ajoutée pour qu'on puisse la réference au moment de supression ou de recherche
-function genererIdUnique(){
+// Fonction pour générer un ID Unique à chaque tâche ajoutée pour qu'on puisse la référencer au moment de suppression ou de recherche
+function genererIdUnique() {
     return "tache-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
 }
+
 //--------------------------------------------------------------------------------------------------
-// Afficher la pop-up d'ajout de tache
+// Afficher la pop-up d'ajout de tâche
 document.getElementById('btn-00').addEventListener('click', function() {
     const textContainer = document.getElementById('ajout-tache-Container');
-    textContainer.style.display = "flex"; 
+    textContainer.style.display = "flex";
     textContainer.style.scale = "1";
     textContainer.style.opacity = "1";
 });
-// Masquer la popUp d'ajout de tache
+
+// Masquer la pop-up d'ajout de tâche
 document.getElementById('cancelBtn').addEventListener('click', function() {
     const textContainer = document.getElementById('ajout-tache-Container');
     textContainer.style.display = "none";
 });
+
+// Variable pour stocker l'ID de la tâche à modifier (null si on ajoute une nouvelle tâche)
+let tacheEnCoursModification = null;
+
 //--------------------------------------------------------------------------------------------------
 // Fonction pour afficher toutes les tâches sauvegardées dans le localStorage
 function afficherTaches() {
     const taches = JSON.parse(localStorage.getItem("taches")) || [];
-    // Réinitialiser les conteneurs de taches
     document.getElementById("taches-a-realiser").innerHTML = '';
     document.getElementById("taches-encours").innerHTML = '';
     document.getElementById("taches-accomplies").innerHTML = '';
-    // Parcourir chaque tâche et l'afficher dans la section appropriée
+
     taches.forEach(tache => {
         afficherTache(tache);
     });
 }
-// Fonction pour afficher une tache specifique
+
+// Fonction pour afficher une tâche spécifique
 function afficherTache(tache) {
     const nouvelleTache = document.createElement("div");
     nouvelleTache.classList.add("style-tache");
     nouvelleTache.setAttribute("data-id", tache.id); // Ajouter l'ID comme attribut
+    nouvelleTache.setAttribute("draggable", "true"); // Rendre la tâche draggable
+
     nouvelleTache.innerHTML = `
         <h4>Titre de la tâche : <span id="titre-tache">${tache.titreTache}</span></h4>
         <h5>Date d'échéance : <span id="deadline">${tache.dateEcheance}</span></h5>
@@ -47,7 +55,12 @@ function afficherTache(tache) {
             <button id="supprimer-tache">Supprimer</button>
         </div>
     `;
-    // Ajouter la tache dans sa section selon son statut
+
+    // Ajouter les événements de drag & drop pour la tâche
+    nouvelleTache.addEventListener("dragstart", function(event) {
+        event.dataTransfer.setData("text/plain", tache.id);
+    });
+
     if (tache.statutTache === "Tache a realiser") {
         document.getElementById("taches-a-realiser").appendChild(nouvelleTache);
     } else if (tache.statutTache === "Tache en cours") {
@@ -55,47 +68,131 @@ function afficherTache(tache) {
     } else if (tache.statutTache === "Tache accomplie") {
         document.getElementById("taches-accomplies").appendChild(nouvelleTache);
     }
-    //ajouter l'option de supression de tache
+
+    // Ajouter l'option de suppression de tâche
     nouvelleTache.querySelector("#supprimer-tache").addEventListener("click", function(){
         supprimerTache(tache.id);
     });
+
+    // Ajouter l'option de modification de tâche
+    nouvelleTache.querySelector("#modifier-tache").addEventListener("click", function(){
+        modifierTache(tache.id);
+    });
 }
+
+//--------------------------------------------------------------------------------------------------
 // Fonction pour supprimer une tâche
 function supprimerTache(id) {
-    let taches = JSON.parse(localStorage.getItem("taches")) || []; // Récupérer les tâches depuis le localStorage
+    let taches = JSON.parse(localStorage.getItem("taches")) || [];
     taches = taches.filter(tache => tache.id !== id); // Filtrer pour conserver toutes les taches sauf celle à supprimer
-    localStorage.setItem("taches", JSON.stringify(taches)); // Mettre a jour le localStorage
+    localStorage.setItem("taches", JSON.stringify(taches));
     afficherTaches();
 }
-// Enregistrement des données saisis a partir du formulaire
+
+// Fonction pour pré-remplir le formulaire pour la modification d'une tâche
+function modifierTache(id) {
+    const taches = JSON.parse(localStorage.getItem("taches")) || [];
+    const tache = taches.find(t => t.id === id);
+
+    if (tache) {
+        // Remplir le formulaire avec les valeurs de la tâche à modifier
+        document.getElementById("tit-tache").value = tache.titreTache;
+        document.getElementById("ech-tache").value = tache.dateEcheance;
+        document.getElementById("prio-tache").value = tache.prioriteTache;
+        document.getElementById("desc-tache").value = tache.descriptionTache;
+        document.getElementById("stat-tache").value = tache.statutTache;
+
+        // Stocker l'ID de la tâche pour la modification
+        tacheEnCoursModification = id;
+
+        // Afficher la pop-up de modification
+        const textContainer = document.getElementById('ajout-tache-Container');
+        textContainer.style.display = "flex";
+    }
+}
+
+//--------------------------------------------------------------------------------------------------
+// Enregistrement des données saisies à partir du formulaire
 const formulaire = document.getElementById("formulaire-tache");
 formulaire.addEventListener("submit", function(event) {
-    event.preventDefault(); // Empeche le rechargement de la page
+    event.preventDefault();
+
     // Récupération des valeurs du formulaire
     const titreTache = document.getElementById("tit-tache").value;
     const dateEcheance = document.getElementById("ech-tache").value;
     const prioriteTache = document.getElementById("prio-tache").value;
     const descriptionTache = document.getElementById("desc-tache").value;
     const statutTache = document.getElementById("stat-tache").value;
-    // Création de l'objet tache 
-    const nouvelleTache = { 
-        id: genererIdUnique(), // pour ajouter l'id généré
-        titreTache,
-        dateEcheance,
-        prioriteTache,
-        descriptionTache,
-        statutTache
-    };
-    // Sauvegarde de la nouvelle tâche dans le localStorage
-    const taches = JSON.parse(localStorage.getItem("taches")) || [];
-    taches.push(nouvelleTache);
-    localStorage.setItem("taches", JSON.stringify(taches));
-    // Afficher la tache ajoutée
-    afficherTache(nouvelleTache);
-    // reinitialisation de formulaire
+
+    // Si une tâche est en cours de modification, mettre à jour ses informations
+    if (tacheEnCoursModification) {
+        let taches = JSON.parse(localStorage.getItem("taches")) || [];
+        const index = taches.findIndex(t => t.id === tacheEnCoursModification);
+
+        if (index !== -1) {
+            taches[index] = {
+                ...taches[index],
+                titreTache,
+                dateEcheance,
+                prioriteTache,
+                descriptionTache,
+                statutTache
+            };
+        }
+        localStorage.setItem("taches", JSON.stringify(taches));
+        tacheEnCoursModification = null; // Réinitialiser l'ID de modification
+    } else {
+        // Sinon, ajouter une nouvelle tâche
+        const nouvelleTache = { 
+            id: genererIdUnique(),
+            titreTache,
+            dateEcheance,
+            prioriteTache,
+            descriptionTache,
+            statutTache
+        };
+
+        const taches = JSON.parse(localStorage.getItem("taches")) || [];
+        taches.push(nouvelleTache);
+        localStorage.setItem("taches", JSON.stringify(taches));
+        afficherTache(nouvelleTache);
+    }
+
+    // Réinitialisation du formulaire
     formulaire.reset();
     document.getElementById("ajout-tache-Container").style.display = "none";
+    afficherTaches();
 });
-// Charger les taches sauvegardées dès chargement de la page
+
+//--------------------------------------------------------------------------------------------------
+// Charger les tâches sauvegardées dès le chargement de la page
 document.addEventListener("DOMContentLoaded", afficherTaches);
 
+//--------------------------------------------------------------------------------------------------
+// Gestion des événements de drag and drop pour les colonnes de tâches
+["taches-a-realiser", "taches-encours", "taches-accomplies"].forEach(statutId => {
+    const colonne = document.getElementById(statutId);
+
+    colonne.addEventListener("dragover", function(event) {
+        event.preventDefault();
+    });
+
+    colonne.addEventListener("drop", function(event) {
+        event.preventDefault();
+        const tacheId = event.dataTransfer.getData("text/plain");
+        let taches = JSON.parse(localStorage.getItem("taches")) || [];
+        const tache = taches.find(t => t.id === tacheId);
+
+        if (tache) {
+            if (statutId === "taches-a-realiser") {
+                tache.statutTache = "Tache a realiser";
+            } else if (statutId === "taches-encours") {
+                tache.statutTache = "Tache en cours";
+            } else if (statutId === "taches-accomplies") {
+                tache.statutTache = "Tache accomplie";
+            }
+            localStorage.setItem("taches", JSON.stringify(taches));
+            afficherTaches();
+        }
+    });
+});
