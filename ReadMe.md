@@ -4,9 +4,6 @@ Dadsi Mohammed kanban
 
 # Task Management System — To Do List
 
-## Project Overview
-**Assigned to:** Houssni Ouchad  
-**Created on:** 01/11/24
 
 ### Project Objective
 Develop a responsive task management application that allows users to add, search, filter, and prioritize tasks using HTML, CSS, and JavaScript. The application should provide an intuitive and attractive user interface (UI) with a smooth user experience (UX).
